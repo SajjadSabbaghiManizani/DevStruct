@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.Repository
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<TEntity> :IDisposable where TEntity : class
     {
-        Task<T> GetById(int id);
-        Task<IEnumerable<T>> GetAll();
-        Task Add(T entity);
-        void Delete(T entity);
-        void Update(T entity);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<TEntity> GetByIdAsync(int id);
+        Task InsertAsync(TEntity entity);
+        Task UpdateAsync(TEntity entityToUpdate);
+        Task DeleteAsync(int id);
     }
 }

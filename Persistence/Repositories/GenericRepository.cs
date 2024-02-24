@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Repository;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,39 +9,58 @@ using System.Threading.Tasks;
 
 namespace Persistence.EFCore.Repositories
 {
-    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
+    public  class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        protected readonly DbContextClass _dbContext;
 
-        protected GenericRepository(DbContextClass context)
+        private readonly DbContextClass _dbContext;
+        private DbContext context;
+
+        public GenericRepository(DbContextClass dbContext)
         {
-            _dbContext = context;
+            _dbContext = dbContext;
         }
 
-        public async Task<T> GetById(int id)
+        public GenericRepository(DbContext context)
         {
-           
-            return await _dbContext.Set<T>().FindAsync(id);
+            this.context = context;
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public async Task Add(T entity)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
-            await _dbContext.Set<T>().AddAsync(entity);
+            return await _dbContext.Set<TEntity>().FindAsync(id);
         }
 
-        public void Delete(T entity)
+        public async Task InsertAsync(TEntity entity)
         {
-            _dbContext.Set<T>().Remove(entity);
+            await _dbContext.Set<TEntity>().AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Update(T entity)
+        public async Task UpdateAsync(TEntity entityToUpdate)
         {
-            _dbContext.Set<T>().Update(entity);
+            _dbContext.Set<TEntity>().Update(entityToUpdate);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entityToDelete = await _dbContext.Set<TEntity>().FindAsync(id);
+            if (entityToDelete != null)
+            {
+                _dbContext.Set<TEntity>().Remove(entityToDelete);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public void Dispose()
+        {
+            _dbContext.Dispose(); 
         }
     }
 }
+

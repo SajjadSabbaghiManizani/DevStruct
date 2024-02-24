@@ -15,12 +15,12 @@ namespace Application.Services
       where TDto : class
     {
         private readonly IMapper _mapper;
-        public IUnitOfWork _unitOfWork;
+  
 
-        public GenericCRUDService(IMapper mapper,IUnitOfWork unitOfWork)
+        public GenericCRUDService(IMapper mapper)
         {
             _mapper = mapper;
-            _unitOfWork = unitOfWork;
+
 
         }
 

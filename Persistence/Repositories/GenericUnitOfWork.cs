@@ -1,26 +1,47 @@
-﻿namespace Persistence.EFCore.Repositories
+﻿using Application.Interfaces.Repository;
+using Microsoft.EntityFrameworkCore;
+using static Persistence.EFCore.Repositories.GenericUnitOfWork;
+
+namespace Persistence.EFCore.Repositories
 {
-    public class GenericUnitOfWork<TRepo, TEntity> : IDisposable
-    where TRepo : GenericRepository<TEntity>
-    where TEntity : class
+    public class GenericUnitOfWork : IGenericUnitOfWork
     {
-     
-        public Dictionary<Type, TRepo> repositories = new Dictionary<Type, TRepo>();
-        public void Dispose()
+        private readonly DbContext _context;
+
+        public GenericUnitOfWork(DbContext context)
         {
-        }
-        public TRepo Repository()
-        {
-            if (repositories.Keys.Contains(typeof(TEntity)) == true)
-            {
-                return repositories[typeof(TEntity)];
-            }
-            TRepo repo = (TRepo)Activator.CreateInstance(
-                typeof(TRepo),
-                new object[] { });
-            repositories.Add(typeof(TEntity), repo);
-            return repo;
+            _context = context;
         }
 
+        public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
+        {
+            return new GenericRepository<TEntity>(_context);
+        }
+
+        public void BeginTransaction()
+        {
+            _context.Database.BeginTransaction();
+        }
+
+        public void CommitTransaction()
+        {
+            _context.Database.CommitTransaction();
+        }
+
+        public void RollbackTransaction()
+        {
+            _context.Database.RollbackTransaction();
+        }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
     }
+
 }

@@ -1,10 +1,11 @@
-﻿using Application.Services;
+﻿using Application.DTOs;
+using Application.Services;
 using Domain.Entities;
 
 namespace Application.Interfaces.Services
 {
-    public interface IProductService : ICrudService<ProductDetails>
+    public interface IProductService : IGenericCRUDService<ProductDetails, ProductDetailsRequestDto>
     {
-     
+       
     }
 }
