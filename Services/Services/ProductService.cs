@@ -1,42 +1,56 @@
-﻿using Application.Interfaces.Repository;
-using Application.Interfaces.Services;
+﻿using Application.DTOs;
+using Application.Interfaces.Repository;
+using AutoMapper;
 using Domain.Entities;
+using Services.IServices;
 
-namespace Application.Services
+namespace Services.Services
 {
-    public class ProductService : GenericService<ProductDetails>, IProductService
+    public class ProductService : GenericService<ProductDetails, ProductDetailsRequestDto>, IProductService
     {
-        public IUnitOfWork _unitOfWork;
-        private readonly ICrudService<ProductDetails> _appService;
+        public IGenericUnitOfWork _unitOfWork;
+        private readonly IGenericService<ProductDetails, ProductDetailsRequestDto> _appService;
+        private readonly IMapper _mapper;
 
-        public ProductService(IUnitOfWork unitOfWork, ICrudService<ProductDetails> appService)
+        public ProductService(IGenericUnitOfWork unitOfWork, IGenericService<ProductDetails,ProductDetailsRequestDto> appService,IMapper mapper)
         : base(appService)  
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _appService = appService ?? throw new ArgumentNullException();
+            _mapper = mapper ?? throw new ArgumentNullException();
         }
-          
+
+       public async Task<bool> CreateProduct(ProductDetailsRequestDto productDetailsRequestDto)
+       {
+           if (productDetailsRequestDto != null)
+           {
+                var entity = _mapper.Map<ProductDetails>(productDetailsRequestDto);
+                await _unitOfWork.GetRepository<ProductDetails>().InsertAsync(entity);
 
 
 
 
 
 
-        //public async Task<bool> CreateProduct(ProductDetails productDetails)
-        //{
-        //    if (productDetails != null)
-        //    {
-        //        await _unitOfWork.Products.Add(productDetails);
 
-        //        var result = _unitOfWork.Save();
 
-        //        if (result > 0)
-        //            return true;
-        //        else
-        //            return false;
-        //    }
-        //    return false;
-        //}
+               await _unitOfWork.(productDetails);
+
+               var result = _unitOfWork.Save();
+
+               if (result > 0)
+                   return true;
+               else
+                   return false;
+           }
+           return false;
+       }
+
+
+
+
+
+
 
         //public async Task<bool> DeleteProduct(int productId)
         //{

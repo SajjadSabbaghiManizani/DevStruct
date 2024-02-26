@@ -1,6 +1,6 @@
 ﻿namespace Application.DTOs
 {
-    public class ProductDetailsRequestDto
+    public record ProductDetailsRequestDto
     {
          int Id { get;  set; }
          DateTime CreatedAt { get;  set; }

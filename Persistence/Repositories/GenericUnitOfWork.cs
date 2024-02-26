@@ -18,21 +18,6 @@ namespace Persistence.EFCore.Repositories
             return new GenericRepository<TEntity>(_context);
         }
 
-        public void BeginTransaction()
-        {
-            _context.Database.BeginTransaction();
-        }
-
-        public void CommitTransaction()
-        {
-            _context.Database.CommitTransaction();
-        }
-
-        public void RollbackTransaction()
-        {
-            _context.Database.RollbackTransaction();
-        }
-
         public void SaveChanges()
         {
             _context.SaveChanges();

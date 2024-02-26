@@ -20,11 +20,6 @@ namespace Persistence.EFCore.Repositories
             _dbContext = dbContext;
         }
 
-        public GenericRepository(DbContext context)
-        {
-            this.context = context;
-        }
-
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _dbContext.Set<TEntity>().ToListAsync();

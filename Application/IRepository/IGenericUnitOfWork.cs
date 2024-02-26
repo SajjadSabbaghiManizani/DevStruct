@@ -10,13 +10,6 @@ namespace Application.Interfaces.Repository
     public interface IGenericUnitOfWork : IDisposable
     {
         IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
-
-        void BeginTransaction();
-
-        void CommitTransaction();
-
-        void RollbackTransaction();
-
         void SaveChanges();
     }
 
