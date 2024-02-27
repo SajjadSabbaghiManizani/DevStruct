@@ -19,8 +19,9 @@ namespace Services.Services
     {
         private readonly IGenericRepository<TEntity> _repository;
         private readonly IMapper _mapper;
+        public IGenericUnitOfWork _unitOfWork;
 
-        public GenericService(IGenericRepository<TEntity> repository, IMapper mapper)
+        public GenericService(IGenericRepository<TEntity> repository, IMapper mapper , IGenericUnitOfWork genericUnitOfWork)
         {
             _repository = repository;
             _mapper = mapper;
@@ -29,7 +30,9 @@ namespace Services.Services
         public async Task<TEntity> InsertAsync(TDto dto)
         {
             var entity =_mapper.Map<TEntity>(dto);
-            await _repository.InsertAsync(entity);
+            await _repository.InsertAsync(entity); 
+            await _unitOfWork.SaveChangesAsync();
+
             return entity;
         }
 
@@ -46,15 +49,16 @@ namespace Services.Services
         public async Task UpdateAsync(TEntity entity)
         {
             await _repository.UpdateAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);
+            await _unitOfWork.SaveChangesAsync();
         }
 
     }
 
 }
 
-}

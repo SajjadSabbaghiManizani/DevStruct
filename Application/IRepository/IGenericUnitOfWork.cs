@@ -10,7 +10,7 @@ namespace Application.Interfaces.Repository
     public interface IGenericUnitOfWork : IDisposable
     {
         IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
-        void SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 
 }

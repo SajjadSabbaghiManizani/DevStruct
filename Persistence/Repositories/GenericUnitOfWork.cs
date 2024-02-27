@@ -15,12 +15,12 @@ namespace Persistence.EFCore.Repositories
 
         public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
-            return new GenericRepository<TEntity>(_context);
+            return new GenericRepository<TEntity>((DbContextClass)_context);
         }
 
-        public void SaveChanges()
+        public async Task<int> SaveChangesAsync()
         {
-            _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
 
         public void Dispose()

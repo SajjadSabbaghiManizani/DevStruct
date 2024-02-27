@@ -16,6 +16,22 @@ namespace Services.IServices
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(int id);
     }
+    public interface IGenericService<TEntity> where TEntity : class
+    {
+        Task<TEntity> InsertAsync(TEntity entity);
+        Task<TEntity> GetByIdAsync(int id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task UpdateAsync(TEntity entity);
+        Task DeleteAsync(int id);
+    }
+    public interface IGenericService<TEntity, RequestDTO,ResponseDTo> where TEntity : class
+    {
+        Task<TEntity> InsertAsync(RequestDTO entity);
+        Task<TEntity> GetByIdAsync(int id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task UpdateAsync(RequestDTO entity);
+        Task DeleteAsync(int id);
+    }
 }
 
 
