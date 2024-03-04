@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Application.Excepions;
+﻿using Application.Interfaces.Repository;
 using AutoMapper;
-using System.Linq.Expressions;
-using Application.Interfaces.Repository;
+using Microsoft.EntityFrameworkCore;
 using Services.IServices;
-using Domain.Entities;
-using Application.DTOs;
 
 
 namespace Services.Services
@@ -21,7 +15,7 @@ namespace Services.Services
         private readonly IMapper _mapper;
         public IGenericUnitOfWork _unitOfWork;
 
-        public GenericService(IGenericRepository<TEntity> repository, IMapper mapper , IGenericUnitOfWork genericUnitOfWork)
+        public GenericService(IGenericRepository<TEntity> repository, IMapper mapper, IGenericUnitOfWork genericUnitOfWork)
         {
             _repository = repository;
             _mapper = mapper;
@@ -29,14 +23,14 @@ namespace Services.Services
 
         public async Task<TEntity> InsertAsync(TDto dto)
         {
-            var entity =_mapper.Map<TEntity>(dto);
-            await _repository.InsertAsync(entity); 
+            var entity = _mapper.Map<TEntity>(dto);
+            await _repository.InsertAsync(entity);
             await _unitOfWork.SaveChangesAsync();
 
             return entity;
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await _repository.GetByIdAsync(id);
         }
@@ -52,10 +46,19 @@ namespace Services.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(TEntity entity)
         {
-            await _repository.DeleteAsync(id);
+            await _repository.DeleteAsync(entity);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> Exists(Guid id)
+        {
+
+            var result = await _repository.GetByIdAsync(id);
+            if (result == null)
+                return false;
+            return true;
         }
 
     }

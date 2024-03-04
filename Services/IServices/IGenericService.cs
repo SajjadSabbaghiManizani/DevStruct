@@ -11,27 +11,29 @@ namespace Services.IServices
         where TDto : class
     {
         Task<TEntity> InsertAsync(TDto entity);
-        Task<TEntity> GetByIdAsync(int id);
+        Task<TEntity> GetByIdAsync(Guid id);
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task UpdateAsync(TEntity entity);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(TEntity entity);
+        Task<bool> Exists(Guid id);
+        Task SaveChangesAsync();
     }
-    public interface IGenericService<TEntity> where TEntity : class
-    {
-        Task<TEntity> InsertAsync(TEntity entity);
-        Task<TEntity> GetByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task UpdateAsync(TEntity entity);
-        Task DeleteAsync(int id);
-    }
-    public interface IGenericService<TEntity, RequestDTO,ResponseDTo> where TEntity : class
-    {
-        Task<TEntity> InsertAsync(RequestDTO entity);
-        Task<TEntity> GetByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task UpdateAsync(RequestDTO entity);
-        Task DeleteAsync(int id);
-    }
+    //public interface IGenericService<TEntity> where TEntity : class
+    //{
+    //    Task<TEntity> InsertAsync(TEntity entity);
+    //    Task<TEntity> GetByIdAsync(int id);
+    //    Task<IEnumerable<TEntity>> GetAllAsync();
+    //    Task UpdateAsync(TEntity entity);
+    //    Task DeleteAsync(TEntity entity);
+    //}
+    //public interface IGenericService<TEntity, RequestDTO,ResponseDTo> where TEntity : class
+    //{
+    //    Task<TEntity> InsertAsync(RequestDTO entity);
+    //    Task<TEntity> GetByIdAsync(int id);
+    //    Task<IEnumerable<TEntity>> GetAllAsync();
+    //    Task UpdateAsync(RequestDTO entity);
+    //    Task DeleteAsync(TEntity entity);
+    //}
 }
 
 

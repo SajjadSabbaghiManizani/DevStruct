@@ -9,9 +9,10 @@ namespace Application.Interfaces.Repository
     public interface IGenericRepository<TEntity> :IDisposable where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity> GetByIdAsync(int id);
+        Task<TEntity> GetByIdAsync(Guid id);
         Task InsertAsync(TEntity entity);
         Task UpdateAsync(TEntity entityToUpdate);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(TEntity entity);
+        
     }
 }

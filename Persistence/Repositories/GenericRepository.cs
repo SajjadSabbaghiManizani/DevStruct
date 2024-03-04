@@ -25,7 +25,7 @@ namespace Persistence.EFCore.Repositories
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
@@ -33,23 +33,17 @@ namespace Persistence.EFCore.Repositories
         public async Task InsertAsync(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(TEntity entityToUpdate)
         {
             _dbContext.Set<TEntity>().Update(entityToUpdate);
-            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            var entityToDelete = await _dbContext.Set<TEntity>().FindAsync(id);
-            if (entityToDelete != null)
-            {
-                _dbContext.Set<TEntity>().Remove(entityToDelete);
-                await _dbContext.SaveChangesAsync();
-            }
+        public async Task DeleteAsync(TEntity entity)
+        {   
+            //var entityToDelete = await _dbContext.Set<TEntity>().FindAsync(entity);
+             _dbContext.Set<TEntity>().Remove(entity);
         }
 
         public void Dispose()

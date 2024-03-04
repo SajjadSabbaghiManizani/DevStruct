@@ -12,16 +12,16 @@ namespace Persistence.EFCore.ServiceExtension
 {
     public static class ServiceExtension
     {
-        public static IServiceCollection AddDIServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<DbContextClass>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            });
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IProductRepository, ProductRepository>();
+        //public static IServiceCollection AddDIServices(this IServiceCollection services,  configuration)
+        //{
+        //    services.AddDbContext<DbContextClass>(options =>
+        //    {
+        //        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+        //    });
+        //    services.AddScoped<IUnitOfWork, UnitOfWork>();
+        //    services.AddScoped<IProductRepository, ProductRepository>();
 
-            return services;
-        }
+        //    return services;
+        //}
     }
 }
