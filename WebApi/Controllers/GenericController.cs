@@ -1,25 +1,26 @@
-﻿using Application.Interfaces.Repository;
-using Domain.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Services.IServices;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GenericController<TModel> : Controller where TModel : BaseEntity
+    public class GenericController<TModel, TDto> : Controller where TModel : BaseEntity
+        where TDto : class
     {
-        private readonly IGenericRepository<TModel> _repository;
+        private readonly IGenericService<TModel, TDto> _genericService;
 
-        public GenericController(IGenericRepository<TModel> repository)
+        public GenericController(IGenericService<TModel, TDto> genericService)
         {
-            _repository = repository;
+            _genericService = genericService;
         }
 
         // GET: /api/[controller]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var models = await _repository.GetAllAsync();
+            var models = await _genericService.GetAllAsync();
             return Ok(models);
         }
 
@@ -27,7 +28,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(Guid id)
         {
-            var model = await _repository.GetByIdAsync(id);
+            var model = await _genericService.GetByIdAsync(id);
 
             if (model == null)
             {
@@ -39,16 +40,18 @@ namespace WebApi.Controllers
 
         // POST: /api/[controller] 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] TModel model)
+        public async Task<IActionResult> Post([FromBody] TDto model)
         {
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _repository.InsertAsync(model);
+              var jhgkh = await _genericService.InsertAsync(model);
+      
 
-            return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
+            return CreatedAtAction(nameof(Get), new { id = jhgkh.Id }, model);
         }
 
         // PUT: /api/[controller]/5
@@ -103,8 +106,8 @@ namespace WebApi.Controllers
 
         private async Task<bool> ModelExists(Guid id)
         {
-            
-            return  await _repository.GetByIdAsync(id);
+
+            return await _repository.GetByIdAsync(id);
         }
     }
 

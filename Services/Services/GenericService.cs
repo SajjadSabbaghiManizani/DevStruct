@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Repository;
 using AutoMapper;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Services.IServices;
 
@@ -8,7 +9,7 @@ namespace Services.Services
 {
 
     public class GenericService<TEntity, TDto> : IGenericService<TEntity, TDto>
-     where TEntity : class
+     where TEntity : BaseEntity
      where TDto : class
     {
         private readonly IGenericRepository<TEntity> _repository;
@@ -23,16 +24,30 @@ namespace Services.Services
 
         public async Task<TEntity> InsertAsync(TDto dto)
         {
-            var entity = _mapper.Map<TEntity>(dto);
-            await _repository.InsertAsync(entity);
-            await _unitOfWork.SaveChangesAsync();
-
-            return entity;
+            if(dto != null)
+            {
+                var entity = _mapper.Map<TEntity>(dto);
+                await _repository.InsertAsync(entity);
+                await _unitOfWork.SaveChangesAsync();
+                return entity;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<TEntity> GetByIdAsync(Guid id)
         {
-            return await _repository.GetByIdAsync(id);
+            if (id == null)
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            else
+            {
+                return null;
+            }
+   
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -48,7 +63,7 @@ namespace Services.Services
 
         public async Task DeleteAsync(TEntity entity)
         {
-            await _repository.DeleteAsync(entity);
+            await _repository.Delete(entity);
             await _unitOfWork.SaveChangesAsync();
         }
 

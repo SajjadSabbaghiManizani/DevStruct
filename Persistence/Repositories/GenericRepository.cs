@@ -1,15 +1,9 @@
 ﻿using Application.Interfaces.Repository;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Persistence.EFCore.Repositories
 {
-    public  class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public  class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity :  BaseEntity
     {
 
         private readonly DbContextClass _dbContext;
@@ -34,15 +28,15 @@ namespace Persistence.EFCore.Repositories
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
         }
+          
 
         public async Task UpdateAsync(TEntity entityToUpdate)
         {
             _dbContext.Set<TEntity>().Update(entityToUpdate);
         }
 
-        public async Task DeleteAsync(TEntity entity)
+        public async Task Delete(TEntity entity)
         {   
-            //var entityToDelete = await _dbContext.Set<TEntity>().FindAsync(entity);
              _dbContext.Set<TEntity>().Remove(entity);
         }
 
