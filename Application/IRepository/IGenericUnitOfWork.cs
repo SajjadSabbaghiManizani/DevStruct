@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Application.Interfaces.Repository
     
     public interface IGenericUnitOfWork : IDisposable
     {
-        IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
+        IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity;
         Task<int> SaveChangesAsync();
     }
 

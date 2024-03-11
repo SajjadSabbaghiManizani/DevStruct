@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Repository;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using static Persistence.EFCore.Repositories.GenericUnitOfWork;
 
@@ -13,7 +14,7 @@ namespace Persistence.EFCore.Repositories
             _context = context;
         }
 
-        public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : class
+        public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity
         {
             return new GenericRepository<TEntity>((DbContextClass)_context);
         }

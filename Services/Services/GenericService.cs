@@ -20,8 +20,8 @@ namespace Services.Services
         {
             _repository = repository;
             _mapper = mapper;
+            _unitOfWork = genericUnitOfWork;
         }
-
         public async Task<TEntity> InsertAsync(TDto dto)
         {
             if(dto != null)

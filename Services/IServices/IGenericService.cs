@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Services.IServices
 {
-    public interface IGenericService<TEntity, TDto> where TEntity : class
+    public interface IGenericService<TEntity, TDto> where TEntity : BaseEntity
         where TDto : class
     {
         Task<TEntity> InsertAsync(TDto entity);

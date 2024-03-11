@@ -70,19 +70,13 @@ namespace WebApi.Controllers
 
             try
             {
-                await _repository.UpdateAsync(model);
+                await _genericService.UpdateAsync(model);
             }
             catch
             {
-                if (await ModelExists(id))
-                {
-                    throw;
-
-                }
-                else
-                {
-                    return NotFound();
-                }
+             
+               return NotFound();
+             
             }
 
             return NoContent();
@@ -92,23 +86,19 @@ namespace WebApi.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var model = await _repository.GetByIdAsync(id);
+            var model = await _genericService.GetByIdAsync(id);
 
             if (model == null)
             {
                 return NotFound();
             }
 
-            await _repository.DeleteAsync(model);
+            await _genericService.DeleteAsync(model);
 
             return NoContent();
         }
 
-        private async Task<bool> ModelExists(Guid id)
-        {
-
-            return await _repository.GetByIdAsync(id);
-        }
+       
     }
 
 }
